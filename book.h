@@ -1,9 +1,7 @@
-#include <iostream>
-#include <string.h>
-#include <string>
-#include <algorithm>
-#include <fstream>
+#include <bits/stdc++.h>
 using namespace std;
+#define _CRT_SECURE_NO_WARNINGS
+#pragma warning(disable:4996)
 #define MAXSIZE 10000 
 #define MAX_LINE 1024 
 
@@ -77,16 +75,15 @@ void List::scan() {
     errno_t err = fopen_s(&fp, "book.txt", "r");
 
     if (fp == NULL) {
-        fprintf(stderr, "Can't open file\n");
+        fprintf(stderr, "Can't open the file.\n");
         exit(1);
     }
 
-    char no[32], name[64];
+    char no[32], name[100];
     double price;
     char buffer[MAX_LINE];
     for (int i = 0; i < 2; i++) {
         if (fgets(buffer, MAX_LINE, fp) == NULL) {
-            fprintf(stderr, "unseccessful");
             exit(1);
         }
         printf("%s", buffer);
@@ -94,7 +91,7 @@ void List::scan() {
 
     while (fgets(buffer, MAX_LINE, fp)) {
         Node* newnode = new Node;
-        if (sscanf_s(buffer, "%s %s %lf", no, 32, name, 64, &price) == 3) {
+        if (sscanf_s(buffer, "%s %s %lf", no, 32, name, 100, &price) == 3) {
             for (int i = 0; i < strlen(no); i++) newnode->data.no += no[i];
             for (int j = 0; j < strlen(name); j++) newnode->data.name += name[j];
             newnode->data.price = price;
@@ -104,7 +101,7 @@ void List::scan() {
             number++;
         }
         else {
-            fprintf(stderr, "unseccessful %s\n", buffer);
+            fprintf(stderr, "Unseccessful %s", buffer);
         }
     }
     fclose(fp);
@@ -136,7 +133,6 @@ void List::deletion(const string& name) {
 
 void List::deletion(const int& place) {
     Node* auxpointer = head, * pointer = head->next;
-    //cout << auxpointer->data.price << " " << pointer->data.price;
     int i = 1;
     if (pointer == NULL)
         return;
@@ -171,7 +167,6 @@ void List::invertion() {
     else {
         while (pointer != NULL) {
             pointer->before = auxpointer;
-            //cout << auxpointer->before << " " << pointer << endl;
             pointer = pointer->next;
             auxpointer = auxpointer->next;
         }
@@ -179,11 +174,11 @@ void List::invertion() {
 
     ofstream fout("book-newinverse.txt");
     if (!fout) {
-        cerr << "无法打开文件" << endl;
+        cerr << "Can't open the file." << endl;
         return;
     }
-    fout << "北京林业大学图书馆计算机类图书采购列表" << endl;
-    fout << "ISBN	  书名	    定价" << endl;
+    fout << "Beijing Forestry University Library Computer Books Purchasing List" << endl;
+    fout << "ISBN    Book_Title    Pricing" << endl;
     Node* curr = head;
 
     while (auxpointer->before != NULL) {
@@ -213,11 +208,11 @@ void List::mergesort() {
     show();
     ofstream fout("book-newsort.txt");
     if (!fout) {
-        cerr << "无法打开文件" << endl;
+        cerr << "Can't open the file." << endl;
         return;
     }
-    fout << "北京林业大学图书馆计算机类图书采购列表" << endl;
-    fout << "ISBN	  书名	    定价" << endl;
+    fout << "Beijing Forestry University Library Computer Books Purchasing List" << endl;
+    fout << "ISBN    Book_Title    Pricing" << endl;
     Node* curr = head->next;
     while (curr) {
         fout << curr->data.no << " " << curr->data.name << " " << curr->data.price << endl;
@@ -232,7 +227,6 @@ void List::recmergesort(Node*& firsthead) {
     if (firsthead != NULL)
         if (firsthead->next != NULL) {
             division(firsthead, otherhead);
-            //cout <<" recusion in recmergesort"<<endl<<firsthead<< " " << otherhead->data.price << " " << otherhead->data.name << endl << endl;
             recmergesort(firsthead);
             recmergesort(otherhead);
             firsthead = merge(firsthead, otherhead);
@@ -242,10 +236,8 @@ void List::recmergesort(Node*& firsthead) {
 
 void List::division(Node* first1, Node*& first2) {
     Node* middle, * current;
-    //cout << first2->data.price;
     if (first1 == NULL) {
         first2 = NULL;
-        //cout << "1";
         return;
     }
     else if (first1->next == NULL) {
@@ -268,7 +260,6 @@ void List::division(Node* first1, Node*& first2) {
         }
 
         first2 = middle->next;
-        //cout << "loop in division" << endl<< first2->data.name << endl<<endl;
         middle->next = NULL;
     }
 }
@@ -349,11 +340,11 @@ void List::update() {
     }
     ofstream fout("book-newprice.txt");
     if (!fout) {
-        cerr << "无法打开文件" << endl;
+        cerr << "Can't open the file." << endl;
         return;
     }
-    fout << "北京林业大学图书馆计算机类图书采购列表" << endl;
-    fout << "ISBN	  书名	    定价" << endl;
+    fout << "Beijing Forestry University Library Computer Books Purchasing List" << endl;
+    fout << "ISBN    Book_Title    Pricing" << endl;
     Node* curr = head->next;
     while (curr) {
         fout << curr->data.no << " " << curr->data.name << " " << curr->data.price << endl;
@@ -364,8 +355,8 @@ void List::update() {
 
 void List::fileprint() {
     ofstream fout("book.txt");
-    fout << "北京林业大学图书馆计算机类图书采购列表" << endl;
-    fout << "ISBN	  书名	    定价" << endl;
+    fout << "Beijing Forestry University Library Computer Books Purchasing List" << endl;
+    fout << "ISBN    Book_Title    Pricing" << endl;
     Node* current = head;
     while (current) {
         fout << current->data.no << " " << current->data.name << " " << current->data.price << endl;

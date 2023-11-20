@@ -1,1 +1,1 @@
-# ClassDesign-of-C-C-language
+# ClassDesign of C/C++ language
